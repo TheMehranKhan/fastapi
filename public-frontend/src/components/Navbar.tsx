@@ -64,12 +64,6 @@ const Navbar = () => {
                   >
                     Login
                   </Link>
-                  <Link
-                    to="/register"
-                    className="btn-primary"
-                  >
-                    Sign Up
-                  </Link>
                 </>
               )}
               {isLoggedIn && (
@@ -148,13 +142,6 @@ const Navbar = () => {
                     onClick={() => setIsOpen(false)}
                   >
                     Login
-                  </Link>
-                  <Link
-                    to="/register"
-                    className="btn-primary block w-full text-center"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Sign Up
                   </Link>
                 </>
               )}
