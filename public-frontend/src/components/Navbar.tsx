@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Menu, X, Zap } from 'lucide-react'
+import { Menu, X, Zap, User } from 'lucide-react'
 import { useAuth } from '../hooks/useAuth'
+import { authApi } from '../api/client'
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const [apiStatus, setApiStatus] = useState<'loading' | 'online' | 'offline'>('loading')
 
   const navigation = [
     { name: 'Home', href: '/' },
@@ -12,7 +14,16 @@ const Navbar = () => {
     { name: 'API Demo', href: '/api' },
     { name: 'Contact', href: '/contact' },
   ]
-  const { isLoggedIn, logout } = useAuth()
+  const { isLoggedIn, logout, user } = useAuth()
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      // Check API status when user is logged in
+      authApi.getHealthCheck()
+        .then(() => setApiStatus('online'))
+        .catch(() => setApiStatus('offline'))
+    }
+  }, [isLoggedIn])
 
   return (
     <nav className="bg-white shadow-lg">
@@ -63,6 +74,19 @@ const Navbar = () => {
               )}
               {isLoggedIn && (
                 <>
+                  <div className="flex items-center space-x-2 mr-4">
+                    <div className={`w-2 h-2 rounded-full ${
+                      apiStatus === 'online' ? 'bg-green-500' : 
+                      apiStatus === 'offline' ? 'bg-red-500' : 'bg-yellow-500'
+                    }`}></div>
+                    <span className="text-sm text-gray-600">
+                      API: {apiStatus === 'online' ? 'Online' : apiStatus === 'offline' ? 'Offline' : 'Checking...'}
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-2 mr-4">
+                    <User className="h-4 w-4 text-gray-400" />
+                    <span className="text-sm font-medium text-gray-700">{user?.full_name}</span>
+                  </div>
                   <Link
                     to="/dashboard"
                     className="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
@@ -136,6 +160,19 @@ const Navbar = () => {
               )}
               {isLoggedIn && (
                 <>
+                  <div className="flex items-center space-x-2 px-3 py-2">
+                    <div className={`w-2 h-2 rounded-full ${
+                      apiStatus === 'online' ? 'bg-green-500' : 
+                      apiStatus === 'offline' ? 'bg-red-500' : 'bg-yellow-500'
+                    }`}></div>
+                    <span className="text-sm text-gray-600">
+                      API: {apiStatus === 'online' ? 'Online' : apiStatus === 'offline' ? 'Offline' : 'Checking...'}
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-2 px-3 py-2">
+                    <User className="h-4 w-4 text-gray-400" />
+                    <span className="text-sm font-medium text-gray-700">{user?.full_name}</span>
+                  </div>
                   <Link
                     to="/dashboard"
                     className="btn-secondary block w-full text-center"
