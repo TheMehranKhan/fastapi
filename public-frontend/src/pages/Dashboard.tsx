@@ -1,23 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
-import { LogOut, User, Settings, Shield, Zap, Mail } from 'lucide-react'
+import { User, Settings, Shield, Zap, Mail } from 'lucide-react'
 import { useAuth } from '../hooks/useAuth'
-import { authApi } from '../api/client'
 
 const Dashboard = () => {
-  const { user, logout, isAdmin } = useAuth()
-  const [apiStatus, setApiStatus] = useState<'loading' | 'online' | 'offline'>('loading')
-
-  useEffect(() => {
-    // Check API status
-    authApi.getHealthCheck()
-      .then(() => setApiStatus('online'))
-      .catch(() => setApiStatus('offline'))
-  }, [])
-
-  const handleLogout = () => {
-    logout()
-  }
+  const { user, isAdmin } = useAuth()
 
   return (
     <div className="min-h-screen bg-gray-50">
