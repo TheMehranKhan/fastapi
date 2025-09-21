@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Menu, X, Zap } from 'lucide-react'
 import { useAuth } from '../hooks/useAuth'
@@ -12,7 +12,7 @@ const Navbar = () => {
     { name: 'API Demo', href: '/api' },
     { name: 'Contact', href: '/contact' },
   ]
-  const { isLoggedIn, logout, user } = useAuth()
+  const { isLoggedIn, logout } = useAuth()
 
   return (
     <nav className="bg-white shadow-lg">
