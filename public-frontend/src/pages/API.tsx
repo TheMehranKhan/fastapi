@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { CheckCircle, XCircle, Loader, Copy, ExternalLink } from 'lucide-react'
 import { apiClient, authApi } from '../api/client'
 
@@ -50,7 +50,7 @@ const API = () => {
 
   const testEndpoint = async (endpoint: ApiResponse) => {
     const key = endpoint.endpoint
-    setLoading(prev => ({ ...prev, [key]: true }))
+    setLoading((prev: Record<string, boolean>) => ({ ...prev, [key]: true }))
     
     try {
       // Use the shared apiClient / authApi so the Authorization interceptor picks up the token from localStorage
@@ -60,7 +60,7 @@ const API = () => {
         // Save token so subsequent apiClient requests include it via interceptor
         localStorage.setItem('access_token', loginResp.access_token)
 
-        setResponses(prev => ({
+        setResponses((prev: Record<string, any>) => ({
           ...prev,
           [key]: {
             status: 200,
@@ -75,7 +75,7 @@ const API = () => {
           method: endpoint.method as any,
         })
 
-        setResponses(prev => ({
+        setResponses((prev: Record<string, any>) => ({
           ...prev,
           [key]: {
             status: axiosResp.status,
@@ -85,7 +85,7 @@ const API = () => {
         }))
       }
     } catch (error) {
-      setResponses(prev => ({
+      setResponses((prev: Record<string, any>) => ({
         ...prev,
         [key]: {
           success: false,
@@ -93,7 +93,7 @@ const API = () => {
         }
       }))
     } finally {
-      setLoading(prev => ({ ...prev, [key]: false }))
+      setLoading((prev: Record<string, boolean>) => ({ ...prev, [key]: false }))
     }
   }
 
