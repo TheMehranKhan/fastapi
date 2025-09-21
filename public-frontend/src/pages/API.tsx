@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { CheckCircle, XCircle, Loader, Copy, ExternalLink } from 'lucide-react'
+import { apiClient, authApi } from '../api/client'
 
 interface ApiResponse {
   endpoint: string
@@ -52,42 +53,37 @@ const API = () => {
     setLoading(prev => ({ ...prev, [key]: true }))
     
     try {
-      let url = `http://localhost:8000${endpoint.endpoint}`
-      let options: RequestInit = {
-        method: endpoint.method,
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      }
-
-      // Add authentication for protected endpoints
-      if (endpoint.endpoint.includes('/users/me') || endpoint.endpoint.includes('/items/')) {
-        // For demo purposes, we'll try without auth first
-        options.headers = {
-          ...options.headers,
-          'Authorization': 'Bearer demo-token'
-        }
-      }
-
-      // Special handling for login endpoint
+      // Use the shared apiClient / authApi so the Authorization interceptor picks up the token from localStorage
       if (endpoint.endpoint.includes('/login/access-token')) {
-        options.headers = {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        }
-        options.body = 'username=admin@example.com&password=changethis'
-      }
+        // Perform login and persist token
+        const loginResp = await authApi.login({ username: 'admin@example.com', password: 'changethis' })
+        // Save token so subsequent apiClient requests include it via interceptor
+        localStorage.setItem('access_token', loginResp.access_token)
 
-      const response = await fetch(url, options)
-      const data = await response.json()
-      
-      setResponses(prev => ({
-        ...prev,
-        [key]: {
-          status: response.status,
-          data: data,
-          success: response.ok
-        }
-      }))
+        setResponses(prev => ({
+          ...prev,
+          [key]: {
+            status: 200,
+            data: loginResp,
+            success: true
+          }
+        }))
+      } else {
+        // Generic request using apiClient; apiClient has baseURL set and will attach Authorization
+        const axiosResp = await apiClient.request({
+          url: endpoint.endpoint,
+          method: endpoint.method as any,
+        })
+
+        setResponses(prev => ({
+          ...prev,
+          [key]: {
+            status: axiosResp.status,
+            data: axiosResp.data,
+            success: axiosResp.status >= 200 && axiosResp.status < 300
+          }
+        }))
+      }
     } catch (error) {
       setResponses(prev => ({
         ...prev,
