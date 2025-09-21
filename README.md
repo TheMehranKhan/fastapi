@@ -1,4 +1,16 @@
-# Full Stack FastAPI Template
+# Full Stack FastAPI Template — Ready-to-run Starter
+
+Maintainer: TheMehranKhan | Tags: pwa, public-frontend, starter, fastapi, react, typescript, docker
+
+This repository is a complete, production-minded starter for building modern web applications. It combines a FastAPI backend with a React + TypeScript frontend and is pre-configured for Docker Compose, Traefik, and PWA support. The goal: minimal setup, maximum productivity.
+
+Quickstart — run locally in one step:
+
+```bash
+docker compose up --build
+```
+
+That's it — services will start, the API and frontend will be available, and the PWA-capable frontend is ready for testing and deployment.
 
 <a href="https://github.com/fastapi/full-stack-fastapi-template/actions?query=workflow%3ATest" target="_blank"><img src="https://github.com/fastapi/full-stack-fastapi-template/workflows/Test/badge.svg" alt="Test"></a>
 <a href="https://coverage-badge.samuelcolvin.workers.dev/redirect/fastapi/full-stack-fastapi-template" target="_blank"><img src="https://coverage-badge.samuelcolvin.workers.dev/fastapi/full-stack-fastapi-template.svg" alt="Coverage"></a>
