@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Mail, MessageSquare, Github, ExternalLink, Send } from 'lucide-react'
 
 const Contact = () => {

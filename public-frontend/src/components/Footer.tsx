@@ -1,3 +1,4 @@
+import React from 'react'
 import { Zap, Github, ExternalLink } from 'lucide-react'
 
 const Footer = () => {
