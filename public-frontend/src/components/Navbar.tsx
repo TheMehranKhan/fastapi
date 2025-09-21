@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Menu, X, Zap } from 'lucide-react'
+import { useAuth } from '../hooks/useAuth'
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -11,6 +12,7 @@ const Navbar = () => {
     { name: 'API Demo', href: '/api' },
     { name: 'Contact', href: '/contact' },
   ]
+  const { isLoggedIn, logout, user } = useAuth()
 
   return (
     <nav className="bg-white shadow-lg">
@@ -43,18 +45,38 @@ const Navbar = () => {
               >
                 API Docs
               </a>
-              <Link
-                to="/login"
-                className="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-              >
-                Login
-              </Link>
-              <Link
-                to="/register"
-                className="btn-primary"
-              >
-                Sign Up
-              </Link>
+              {!isLoggedIn && (
+                <>
+                  <Link
+                    to="/login"
+                    className="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="btn-primary"
+                  >
+                    Sign Up
+                  </Link>
+                </>
+              )}
+              {isLoggedIn && (
+                <>
+                  <Link
+                    to="/dashboard"
+                    className="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                  >
+                    Dashboard
+                  </Link>
+                  <button
+                    onClick={() => logout()}
+                    className="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                  >
+                    Logout
+                  </button>
+                </>
+              )}
             </div>
           </div>
 
@@ -94,20 +116,44 @@ const Navbar = () => {
               >
                 API Docs
               </a>
-              <Link
-                to="/login"
-                className="btn-secondary block w-full text-center"
-                onClick={() => setIsOpen(false)}
-              >
-                Login
-              </Link>
-              <Link
-                to="/register"
-                className="btn-primary block w-full text-center"
-                onClick={() => setIsOpen(false)}
-              >
-                Sign Up
-              </Link>
+              {!isLoggedIn && (
+                <>
+                  <Link
+                    to="/login"
+                    className="btn-secondary block w-full text-center"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="btn-primary block w-full text-center"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Sign Up
+                  </Link>
+                </>
+              )}
+              {isLoggedIn && (
+                <>
+                  <Link
+                    to="/dashboard"
+                    className="btn-secondary block w-full text-center"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Dashboard
+                  </Link>
+                  <button
+                    onClick={() => {
+                      setIsOpen(false)
+                      logout()
+                    }}
+                    className="btn-secondary block w-full text-center"
+                  >
+                    Logout
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>
