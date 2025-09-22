@@ -6,7 +6,6 @@ import About from './pages/About'
 import API from './pages/API'
 import Contact from './pages/Contact'
 import Login from './pages/Login'
-import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import Footer from './components/Footer'
 import { useAuth } from './hooks/useAuth'
@@ -37,10 +36,6 @@ function App() {
           <Route 
             path="/login" 
             element={isLoggedIn ? <Navigate to="/dashboard" replace /> : <Login />} 
-          />
-          <Route 
-            path="/register" 
-            element={isLoggedIn ? <Navigate to="/dashboard" replace /> : <Register />} 
           />
           <Route 
             path="/dashboard" 
